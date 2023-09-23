@@ -1,1 +1,18 @@
 services:
+  database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: m1guelsb
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: blog-db
+    ports:
+      - '5432:5432'
+    expose:
+      - 5432
+    networks:
+      - m1guelsb-network
+
+networks:
+  m1guelsb-network:
+    driver: bridge
