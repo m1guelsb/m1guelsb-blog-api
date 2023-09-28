@@ -27,8 +27,8 @@ class CategoryMapperTest {
     assertEquals(Long.valueOf(0L), dto.id());
     assertEquals("Category0", dto.title());
 
-    Category output = mapper.toEntity(dto);
-    assertEquals(Long.valueOf(0L), output.getId());
-    assertEquals("Category0", output.getTitle());
+    Category entity = mapper.toEntity(dto);
+    assertEquals(Long.valueOf(0L), entity.getId());
+    assertEquals("Category0", entity.getTitle());
   }
 }
