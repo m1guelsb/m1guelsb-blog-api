@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -51,6 +52,12 @@ public class GlobalExceptionHandler {
     List<String> errors = ex.getBindingResult().getFieldErrors()
         .stream().map(FieldError::getDefaultMessage).collect(Collectors.toList());
     return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+  }
+
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public ResponseEntity<Map<String, List<String>>> handleConflictException(HttpMessageNotReadableException ex) {
+    List<String> errors = Collections.singletonList(HandleConflictException.formatMessage(ex.getMessage()));
+    return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.CONFLICT);
   }
 
   private Map<String, List<String>> getErrorsMap(List<String> errors) {
