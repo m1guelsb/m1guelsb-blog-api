@@ -60,11 +60,8 @@ class ArticleServicesTest {
 
     when(categoryRepository.findById(anyLong())).thenAnswer(invocation -> {
       Long categoryId = invocation.getArgument(0);
-      if (categoryId == 0L ||
-          categoryId == 1L ||
-          categoryId == 2L ||
-          categoryId == 3L ||
-          categoryId == 4L) {
+      boolean isIdValid = dto.categoryIds().stream().map(id -> id == categoryId) != null;
+      if (isIdValid) {
         Category category = new Category();
         category.setId(categoryId);
         category.setTitle("Category " + categoryId);
