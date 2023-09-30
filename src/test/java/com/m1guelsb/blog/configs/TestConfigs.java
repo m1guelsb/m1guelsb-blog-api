@@ -5,6 +5,8 @@ public class TestConfigs {
   public static final String HEADER_PARAM_ORIGIN = "Origin";
   public static final String HEADER_AUTHORIZATION = "Authorization";
 
+  public static final String CONTENT_TYPE_JSON = "application/json";
+
   public static final String ORIGIN_WEB_DEV = "http://localhost:3000";
 
 }
