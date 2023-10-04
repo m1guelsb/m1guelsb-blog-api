@@ -39,6 +39,11 @@ public class Article {
   @NotBlank
   @NotNull
   @Column(columnDefinition = "TEXT")
+  private String brief;
+
+  @NotBlank
+  @NotNull
+  @Column(columnDefinition = "TEXT")
   private String body;
 
   @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })

@@ -80,6 +80,7 @@ class ArticleServicesTest {
 
     assertNotNull(createdArticle);
     assertEquals("Article0", createdArticle.getTitle());
+    assertEquals("ArticleBrief0", createdArticle.getBrief());
     assertEquals("<article></article>", createdArticle.getBody());
     assertEquals(5, createdArticle.getCategories().size());
   }
@@ -99,8 +100,13 @@ class ArticleServicesTest {
     assertNotNull(articleOne);
     assertNotNull(articleOne.getId());
     assertNotNull(articleOne.getTitle());
+    assertNotNull(articleOne.getBrief());
     assertNotNull(articleOne.getBody());
+    assertNotNull(articleOne.getCreatedAt());
+    assertNotNull(articleOne.getUpdatedAt());
+
     assertEquals("Article1", articleOne.getTitle());
+    assertEquals("ArticleBrief1", articleOne.getBrief());
     assertEquals("<article></article>", articleOne.getBody());
     assertEquals("Category2", articleOne.getCategories().stream().toList().get(1).getTitle());
 
@@ -108,7 +114,10 @@ class ArticleServicesTest {
     assertNotNull(articleFour.getId());
     assertNotNull(articleFour.getTitle());
     assertNotNull(articleFour.getBody());
+    assertNotNull(articleFour.getCreatedAt());
+    assertNotNull(articleFour.getUpdatedAt());
     assertEquals("Article4", articleFour.getTitle());
+    assertEquals("ArticleBrief4", articleFour.getBrief());
     assertEquals("<article></article>", articleFour.getBody());
     assertEquals("Category3", articleFour.getCategories().stream().toList().get(2).getTitle());
   }

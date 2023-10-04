@@ -40,6 +40,7 @@ public class ArticleMock {
     Article article = new Article();
     article.setId(number.longValue());
     article.setTitle("Article" + number);
+    article.setBrief("ArticleBrief" + number);
     article.setBody("<article></article>");
     article.setCategories(new HashSet<>(categoryMock.mockEntityList()));
     article.setCreatedAt(new Date().toInstant());
@@ -53,6 +54,7 @@ public class ArticleMock {
     return new ArticleDto(
         number.longValue(),
         "Article" + number,
+        "ArticleBrief" + number,
         "<article></article>",
         new HashSet<Long>(categoryMock.mockEntityList().stream().map(category -> category.getId()).toList()),
         new Date().toInstant(),

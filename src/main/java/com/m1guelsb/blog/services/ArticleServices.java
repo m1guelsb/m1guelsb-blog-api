@@ -41,6 +41,7 @@ public class ArticleServices {
 
     Article article = new Article();
     article.setTitle(articleDto.title());
+    article.setBrief(articleDto.brief());
     article.setBody(articleDto.body());
     article.setCategories(categoryList);
 
@@ -56,6 +57,7 @@ public class ArticleServices {
           .collect(Collectors.toSet());
 
       articleFound.setTitle(articleDto.title());
+      articleFound.setBrief(articleDto.brief());
       articleFound.setBody(articleDto.body());
       articleFound.setCategories(categoryList);
 

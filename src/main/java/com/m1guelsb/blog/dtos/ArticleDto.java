@@ -9,17 +9,19 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 
 public record ArticleDto(
-    Long id,
+        Long id,
 
-    @NotBlank(message = "title: Is required") @Length(min = 3, max = 100, message = "title: Must be of 3 - 100 characters") String title,
+        @NotBlank(message = "title: Is required") @Length(min = 3, max = 100, message = "title: Must be of 3 - 100 characters") String title,
 
-    @NotBlank(message = "body: Is required") String body,
+        @NotBlank(message = "brief: Is required") String brief,
 
-    @NotEmpty(message = "categoryIds: Must have at least one category") Set<Long> categoryIds,
+        @NotBlank(message = "body: Is required") String body,
 
-    Instant createdAt,
+        @NotEmpty(message = "categoryIds: Must have at least one category") Set<Long> categoryIds,
 
-    Instant updatedAt
+        Instant createdAt,
+
+        Instant updatedAt
 
 ) {
 }

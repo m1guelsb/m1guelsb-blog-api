@@ -1,6 +1,7 @@
 CREATE TABLE articles (
   id SERIAL PRIMARY KEY,
   title varchar(255) UNIQUE NOT NULL,
+  brief text NOT NULL,
   body text NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
