@@ -7,9 +7,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import com.m1guelsb.blog.dtos.ArticleDto;
 import com.m1guelsb.blog.entities.Article;
@@ -17,8 +15,6 @@ import com.m1guelsb.blog.entities.Category;
 import com.m1guelsb.blog.exceptions.ResourceNotFoundException;
 import com.m1guelsb.blog.repositories.ArticleRepository;
 import com.m1guelsb.blog.repositories.CategoryRepository;
-
-import com.m1guelsb.blog.specifications.ArticleSpecification;
 
 @Service
 public class ArticleServices {
@@ -30,10 +26,11 @@ public class ArticleServices {
   private CategoryRepository categoryRepository;
 
   public Page<Article> findAll(List<String> categories, Pageable pageable) {
-    Specification<Article> filters = Specification
-        .where(CollectionUtils.isEmpty(categories) ? null : ArticleSpecification.inCategory(categories));
+    if (categories.isEmpty()) {
+      return articleRepository.findAll(pageable);
+    }
+    return articleRepository.findByCategories(categories, pageable);
 
-    return articleRepository.findAll(filters, pageable);
   }
 
   public Article findByIdWithCategories(Long id) {

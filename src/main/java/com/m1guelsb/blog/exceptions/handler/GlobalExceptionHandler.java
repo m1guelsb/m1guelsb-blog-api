@@ -41,6 +41,13 @@ public class GlobalExceptionHandler {
     return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.NOT_FOUND);
   }
 
+  @ExceptionHandler(org.springframework.web.bind.MissingServletRequestParameterException.class)
+  public ResponseEntity<Map<String, List<String>>> missingServletRequestParameterException(
+      org.springframework.web.bind.MissingServletRequestParameterException ex) {
+    List<String> errors = Collections.singletonList(ex.getMessage());
+    return new ResponseEntity<>(getErrorsMap(errors), new HttpHeaders(), HttpStatus.BAD_REQUEST);
+  }
+
   @ExceptionHandler(DataIntegrityViolationException.class)
   public ResponseEntity<Map<String, List<String>>> handleConflictException(DataIntegrityViolationException ex) {
     List<String> errors = Collections.singletonList(HandleConflictException.formatMessage(ex.getMessage()));
