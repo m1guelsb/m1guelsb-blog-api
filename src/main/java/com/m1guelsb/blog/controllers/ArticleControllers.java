@@ -1,5 +1,7 @@
 package com.m1guelsb.blog.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,6 +38,7 @@ public class ArticleControllers {
 
   @GetMapping()
   public ResponseEntity<Page<Article>> findAll(
+      @RequestParam(value = "categories", required = false) List<String> categories,
       @RequestParam(value = "page", defaultValue = "0") Integer page,
       @RequestParam(value = "size", defaultValue = "10") Integer size,
       @RequestParam(value = "sort", defaultValue = "desc") String sortDirection) {
@@ -44,7 +47,7 @@ public class ArticleControllers {
     Pageable pageable = PageRequest.of(page, size, Sort.by(sort, "createdAt"));
 
     return ResponseEntity.status(HttpStatus.OK)
-        .body(articleServices.findAll(pageable));
+        .body(articleServices.findAll(categories, pageable));
   }
 
   @GetMapping("/{id}")
