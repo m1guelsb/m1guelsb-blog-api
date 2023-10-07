@@ -38,7 +38,7 @@ public class ArticleControllers {
 
   @GetMapping()
   public ResponseEntity<Page<Article>> findAll(
-      @RequestParam(value = "categories") List<String> categories,
+      @RequestParam(value = "categories", required = false) List<String> categories,
       @RequestParam(value = "page", defaultValue = "0") Integer page,
       @RequestParam(value = "size", defaultValue = "10") Integer size,
       @RequestParam(value = "sort", defaultValue = "desc") String sortDirection) {
@@ -50,11 +50,11 @@ public class ArticleControllers {
         .body(articleServices.findAll(categories, pageable));
   }
 
-  @GetMapping("/{id}")
-  public ResponseEntity<Article> findById(
-      @PathVariable @NotNull Long id) {
+  @GetMapping("/{title}")
+  public ResponseEntity<Article> findByTitle(
+      @PathVariable @NotNull String title) {
     return ResponseEntity.status(HttpStatus.OK)
-        .body(articleServices.findByIdWithCategories(id));
+        .body(articleServices.findByTitleWithCategories(title));
   }
 
   @PostMapping

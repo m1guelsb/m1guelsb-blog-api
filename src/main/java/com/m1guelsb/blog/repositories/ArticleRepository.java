@@ -15,5 +15,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
   @Query("SELECT DISTINCT a FROM Article a JOIN a.categories c WHERE c.title IN :categories")
   Page<Article> findByCategories(List<String> categories, Pageable pageable);
 
+  Optional<Article> findByTitleEqualsIgnoringCase(String title);
 
 }

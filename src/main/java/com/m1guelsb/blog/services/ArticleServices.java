@@ -26,15 +26,16 @@ public class ArticleServices {
   private CategoryRepository categoryRepository;
 
   public Page<Article> findAll(List<String> categories, Pageable pageable) {
-    if (categories.isEmpty()) {
+    if (categories == null || categories.isEmpty()) {
       return articleRepository.findAll(pageable);
     }
     return articleRepository.findByCategories(categories, pageable);
 
   }
 
-  public Article findByIdWithCategories(Long id) {
-    return articleRepository.findById(id)
+  public Article findByTitleWithCategories(String title) {
+    var parsedTitle = title.replace("-", " ");
+    return articleRepository.findByTitleEqualsIgnoringCase(parsedTitle)
         .orElseThrow(() -> new ResourceNotFoundException("Article not found"));
   }
 
@@ -45,7 +46,7 @@ public class ArticleServices {
         .collect(Collectors.toSet());
 
     Article article = new Article();
-    article.setTitle(articleDto.title());
+    article.setTitle(articleDto.title().replace("-", " ").trim());
     article.setBrief(articleDto.brief());
     article.setBody(articleDto.body());
     article.setCategories(categoryList);
