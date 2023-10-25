@@ -2,7 +2,7 @@ server:
   port: 8888
 spring:
   datasource:
-    driver-class-name: org.postgresql.Driver
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
   jpa:
     hibernate:
       ddl-auto: none
@@ -10,3 +10,5 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
+cors:
+  originPatterns: "http://localhost:3000"
