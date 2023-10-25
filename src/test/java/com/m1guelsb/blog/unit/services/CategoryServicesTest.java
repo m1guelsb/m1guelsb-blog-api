@@ -24,7 +24,7 @@ import com.m1guelsb.blog.services.CategoryServices;
 
 @TestInstance(Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension.class)
-public class CategoryServicesTest {
+class CategoryServicesTest {
 
   CategoryMock input;
 

@@ -7,6 +7,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,6 +25,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import com.m1guelsb.blog.configs.mocks.ArticleMock;
+import com.m1guelsb.blog.configs.mocks.CategoryMock;
 import com.m1guelsb.blog.entities.Article;
 import com.m1guelsb.blog.entities.Category;
 import com.m1guelsb.blog.exceptions.ResourceNotFoundException;
@@ -38,6 +40,7 @@ import com.m1guelsb.blog.dtos.ArticleDto;
 class ArticleServicesTest {
 
   ArticleMock articleInput;
+  CategoryMock categoryInput;
 
   @InjectMocks
   ArticleServices articleService;
@@ -51,6 +54,8 @@ class ArticleServicesTest {
   @BeforeEach
   void setUpMocks() throws Exception {
     articleInput = new ArticleMock();
+    categoryInput = new CategoryMock();
+
     MockitoAnnotations.openMocks(this);
   }
 
@@ -89,10 +94,11 @@ class ArticleServicesTest {
   void should_findAll_Articles() {
     List<Article> list = articleInput.mockEntityList();
     Pageable pageable = Pageable.ofSize(5).withPage(0);
-    Page<Article> personPage = new PageImpl<>(list, pageable, list.size());
-    when(articleRepository.findAll(pageable)).thenReturn(personPage);
+    Page<Article> articlesPage = new PageImpl<>(list, pageable, list.size());
+    when(articleRepository.findAll(pageable)).thenReturn(articlesPage);
 
-    var article = articleService.findAll(pageable).getContent();
+    var article = articleService
+        .findAll(new ArrayList<String>(), pageable).getContent();
 
     var articleOne = article.get(1);
     var articleFour = article.get(4);
@@ -108,7 +114,8 @@ class ArticleServicesTest {
     assertEquals("Article1", articleOne.getTitle());
     assertEquals("ArticleBrief1", articleOne.getBrief());
     assertEquals("<article></article>", articleOne.getBody());
-    assertEquals("Category2", articleOne.getCategories().stream().toList().get(1).getTitle());
+    assertEquals("Category2",
+        articleOne.getCategories().stream().toList().get(1).getTitle());
 
     assertNotNull(articleFour);
     assertNotNull(articleFour.getId());
@@ -119,24 +126,27 @@ class ArticleServicesTest {
     assertEquals("Article4", articleFour.getTitle());
     assertEquals("ArticleBrief4", articleFour.getBrief());
     assertEquals("<article></article>", articleFour.getBody());
-    assertEquals("Category3", articleFour.getCategories().stream().toList().get(2).getTitle());
+    assertEquals("Category3",
+        articleFour.getCategories().stream().toList().get(2).getTitle());
   }
 
   @Test
-  void should_findById_Article_or_throw_NotFound() {
-    assertThrows(ResourceNotFoundException.class, () -> articleService.findByIdWithCategories(999L));
+  void should_findByTitle_Article_or_throw_NotFound() {
+    assertThrows(ResourceNotFoundException.class, () -> articleService.findByTitleWithCategories("Not valid title"));
 
     Article entity = articleInput.mockEntity();
 
-    when(articleRepository.findById(any())).thenReturn(Optional.of(entity));
+    when(articleRepository.findByTitleEqualsIgnoringCase(any())).thenReturn(Optional.of(entity));
 
-    var article = articleService.findByIdWithCategories(entity.getId());
+    var article = articleService.findByTitleWithCategories(entity.getTitle());
 
     assertNotNull(article);
     assertNotNull(article.getId());
     assertNotNull(article.getTitle());
+    assertNotNull(article.getBrief());
     assertNotNull(article.getBody());
     assertEquals("Article0", article.getTitle());
+    assertEquals("ArticleBrief0", article.getBrief());
     assertEquals("<article></article>", article.getBody());
     assertEquals("Category2", article.getCategories().stream().toList().get(1).getTitle());
   }
